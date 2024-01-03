@@ -2,7 +2,6 @@ import ListLayout from '@/layouts/ListLayoutWithTags'
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer'
 import { allBlogs } from 'contentlayer/generated'
 import { genPageMetadata } from 'app/seo'
-import Script from 'next/script'
 
 const POSTS_PER_PAGE = 5
 
@@ -21,18 +20,11 @@ export default function BlogPage() {
   }
 
   return (
-    <>
-      <Script
-        async
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7840980802013029"
-        crossOrigin="anonymous"
-      ></Script>
-      <ListLayout
-        posts={posts}
-        initialDisplayPosts={initialDisplayPosts}
-        pagination={pagination}
-        title="All Posts"
-      />
-    </>
+    <ListLayout
+      posts={posts}
+      initialDisplayPosts={initialDisplayPosts}
+      pagination={pagination}
+      title="All Posts"
+    />
   )
 }

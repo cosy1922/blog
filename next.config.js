@@ -91,5 +91,6 @@ module.exports = () => {
     },
     basePath: '/blog',
     assetPrefix: '/blog/',
+    crossOrigin: 'anonymous',
   })
 }
