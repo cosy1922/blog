@@ -89,5 +89,7 @@ module.exports = () => {
 
       return config
     },
+    basePath: '/blog',
+    assetPrefix: '/blog/',
   })
 }

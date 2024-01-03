@@ -1,0 +1,41 @@
+---
+title: window에서 nginx 설치하기
+date: '2024-01-12'
+tags: ['nginx', 'window']
+draft: false
+summary: 프록시 설정을 위한 nginx 설치하기
+---
+
+## 소개
+
+Windows 서버에서 도메인 기반의 리버스 프록시 설정을 통해 이러한 경로에 대한 요청을 적절한 로컬 포트 또는 서버로 전달하기 위해 사용
+
+## 1. nginx 설치하기
+
+1-1. http://nginx.org/en/download.html 아래 링크 에서 파일 다운 받기
+
+![Github Traffic](/static/images/blogImg/nginx1.png)
+
+1-2. 설치 후 아래 아이콘 실행 후 `localhost:80` 접속후면 아래와 같이 정상적으로 나옴
+
+![Github Traffic](/static/images/blogImg/nginx2.png)
+
+- 안될경우 80포트 사용중(`netstat -anp tcp | findstr 80`)인지 확인 및 log파일 확인 해보기
+
+https://bakingdevlog.tistory.com/13
+.\nginx.exe -s stop
+
+netstat -ano | findstr 80
+
+taskkill /f /pid asdjlkasdjkl
+
+git init
+git add .
+git commit -m "Your commit message"
+git remote add origin https://github.com/cosy1922/testBlog.git
+git remote set-url origin https://cosy1922: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@github.com/cosy1922/testBlog.git
+sudo git push -f origin main
+
+git pull origin main
+
+git remote set-url origin https://cosy1922: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@github.com/cosy1922/blog.git
