@@ -4,23 +4,22 @@ import siteMetadata from '@/data/siteMetadata'
 import { formatDate } from 'pliny/utils/formatDate'
 import NewsletterForm from 'pliny/ui/NewsletterForm'
 import Head from 'next/head'
+import Script from 'next/script'
 
 const MAX_DISPLAY = 5
 
 export default function Home({ posts }) {
   return (
     <>
-      <Head>
-        <script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7840980802013029"
-          crossOrigin="anonymous"
-        ></script>
-      </Head>
+      <Script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7840980802013029"
+        crossOrigin="anonymous"
+      ></Script>
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
         <div className="space-y-2 pb-8 pt-6 md:space-y-5">
           <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
-            Latest 1
+            Latest
           </h1>
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
             {siteMetadata.description}
