@@ -1,0 +1,84 @@
+---
+title: window에서 nginx 프록시 설정
+date: '2024-01-12'
+tags: ['nginx', 'window']
+draft: false
+summary: windows 서버에서 nginx 도메인 기반의 리버스 프록시 설정하기
+---
+
+## 소개
+
+Windows 서버에서 도메인 기반의 리버스 프록시 설정 하는 방법
+
+## 1. 프록시 설정하기
+
+1. nginx 설치된 경로를 찾아가 conf 안에 있는 nginx 파일을 메모장 으로 열기.
+
+2. 아래와 같이 코드 설정하기.
+
+```txt:nginx/conf/nginx.conf
+#user  nobody;
+worker_processes  1;
+
+#error_log  logs/error.log;
+#error_log  logs/error.log  notice;
+#error_log  logs/error.log  info;
+
+#pid        logs/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+
+    #log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+    #                  '$status $body_bytes_sent "$http_referer" '
+    #                  '"$http_user_agent" "$http_x_forwarded_for"';
+
+    #access_log  logs/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+
+    #gzip  on;
+
+    server {
+        listen       80;
+        server_name  localhost;
+
+        #charset koi8-r;
+
+        #access_log  logs/host.access.log  main;
+
+        location / {
+            proxy_pass http://localhost:3000/blog;
+                proxy_set_header Host $host;
+                proxy_set_header X-Real-IP $remote_addr;
+                proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        location /lt/ {
+            proxy_pass http://localhost:8080/lt/;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+    }
+}
+```
+
+도메인이 `donghyeon.net` 일 경우 위와 같이 설정시 아래와 같이 동작 합니다.
+
+- `donghyeon.net` 으로 접속할 경우 서버 안에서 `http://localhost:3000/blog` 와 동일
+
+- `donghyeon.net/lt` 으로 접속할 경우 서버 안에서 `http://localhost:3000/lt` 와 동일

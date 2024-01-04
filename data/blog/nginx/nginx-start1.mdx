@@ -1,6 +1,6 @@
 ---
 title: window에서 nginx 설치하기
-date: '2024-01-12'
+date: '2024-01-11'
 tags: ['nginx', 'window']
 draft: false
 summary: 프록시 설정을 위한 nginx 설치하기
@@ -24,7 +24,13 @@ test
 
 - 안될경우 80포트 사용중(`netstat -anp tcp | findstr 80`)인지 확인 및 log파일 확인 해보기
 
-https://bakingdevlog.tistory.com/13
+2. nginx 기본 명령어 (nginx 설치된 경로로 이동 후)
+
+- .\nginx.exe -s stop
+- .\nginx.exe -s reload
+
+## 참조 사이트 (https://bakingdevlog.tistory.com/13)
+
 .\nginx.exe -s stop
 
 netstat -ano | findstr 80

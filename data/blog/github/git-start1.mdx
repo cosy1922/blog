@@ -1,0 +1,44 @@
+---
+title: Git commit 및 기본 명령어
+date: '2024-01-11'
+tags: ['git']
+draft: false
+summary: 소스 관리를 위한 git commit 및 기본 명령어 파악하기
+---
+
+## 1. git repository 만들기
+
+- Git접속 => repository => New => Create Repository
+
+![Github Traffic](/blog/static/images/blogImg/git1.png)
+
+## 2. git commit 하는 방법
+
+- 2.1 tokens 발급받기
+
+  - 상단 오른쪽 profile image 클릭 => Setting => Developer settings
+    ![Github Traffic](/blog/static/images/blogImg/git2.png)
+  - Personal access tokens => Tokens (classic) => Generate new token => Generate new token (classic)
+    ![Github Traffic](/blog/static/images/blogImg/git3.png)
+
+  - ### 발급 받은 토큰은 따로 저장안되므로 꼭 다른곳에 메모 해 놓기
+    `(잊어 버렸을 경우 계속 위와 같은 작업 반복 후 토큰 재생성 필요)`
+
+- 2.2 git에 푸쉬 하기 및 기본 명령어 (아래 순서대로)
+
+  - 새로운 저장소 생성하기
+    - `git init`
+  - 수정된 파일 git에 파일 모두 올리기
+    - `git add .`
+  - commit 메세지 작성
+    - `git commit -m "commit message"
+  - git 경로 연결
+    - `git remote add origin https://github.com/gitmyid/레파지토리주소.git`
+  - git 토큰 값 등록
+    - `git remote set-url origin https://cosy1922:github_pat_~~~~~발급받은 토큰값@github.com/gitmyid/레파지토리주소.git`
+  - git에 코드 보내기
+
+    - `sudo git push -f origin main`
+
+  - git에 코드 가져오기
+    - `git pull origin main`
