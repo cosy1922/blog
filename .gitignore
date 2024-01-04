@@ -19,7 +19,6 @@ public/sitemap.xml
 .vercel
 
 # production
-/build
 *.xml
 
 # rss feed
