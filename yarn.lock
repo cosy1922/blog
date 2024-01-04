@@ -5827,7 +5827,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fsevents@npm:~2.3.2":
+"fsevents@npm:^2.3.2, fsevents@npm:~2.3.2":
   version: 2.3.3
   resolution: "fsevents@npm:2.3.3"
   dependencies:
@@ -5837,7 +5837,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fsevents@patch:fsevents@~2.3.2#~builtin<compat/fsevents>":
+"fsevents@patch:fsevents@^2.3.2#~builtin<compat/fsevents>, fsevents@patch:fsevents@~2.3.2#~builtin<compat/fsevents>":
   version: 2.3.3
   resolution: "fsevents@patch:fsevents@npm%3A2.3.3#~builtin<compat/fsevents>::version=2.3.3&hash=df0bf1"
   dependencies:
@@ -8673,6 +8673,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"nextjs-google-adsense@npm:^1.0.0":
+  version: 1.0.0
+  resolution: "nextjs-google-adsense@npm:1.0.0"
+  dependencies:
+    fsevents: ^2.3.2
+  peerDependencies:
+    next: ">=11.0.0"
+    react: ">=17.0.0"
+  dependenciesMeta:
+    fsevents:
+      optional: true
+  checksum: 33b7ce9bd8ef7b76d700acfbbb4f5e9eed1d26e86719c7e1a3e180135390e85f7933ebc2b4f19b9e38ffb02dd3b5ea59696b8e03e8f1b36721a25c0ae252db98
+  languageName: node
+  linkType: hard
+
 "no-case@npm:^3.0.4":
   version: 3.0.4
   resolution: "no-case@npm:3.0.4"
@@ -10965,6 +10980,7 @@ __metadata:
     next: 14.0.3
     next-contentlayer: 0.3.4
     next-themes: ^0.2.1
+    nextjs-google-adsense: ^1.0.0
     pliny: 0.1.6
     postcss: ^8.4.24
     prettier: ^3.0.0

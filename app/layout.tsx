@@ -11,7 +11,7 @@ import siteMetadata from '@/data/siteMetadata'
 import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
 import Script from 'next/script'
-import Head from 'next/head'
+import { GoogleAdSense } from 'nextjs-google-adsense'
 
 const space_grotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -79,10 +79,21 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeProviders>
           <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
           <SectionContainer>
+            {/* <GoogleAdSense publisherId="pub-7840980802013029"></GoogleAdSense> */}
+            <div>layout div test1</div>
             <div className="flex h-screen flex-col justify-between font-sans">
               <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
                 <Header />
-                <main className="mb-auto">{children}</main>
+                <main className="mb-auto">
+                  {children}
+                  {/* <GoogleAdSense publisherId="pub-7840980802013029"></GoogleAdSense> */}
+                  <Script
+                    async
+                    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7840980802013029"
+                    strategy="afterInteractive"
+                    crossOrigin="anonymous"
+                  ></Script>
+                </main>
               </SearchProvider>
               <Footer />
             </div>
