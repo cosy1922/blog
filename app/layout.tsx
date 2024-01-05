@@ -80,7 +80,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
           <SectionContainer>
             {/* <GoogleAdSense publisherId="pub-7840980802013029"></GoogleAdSense> */}
-            <div>layout div test1</div>
             <div className="flex h-screen flex-col justify-between font-sans">
               <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
                 <Header />
