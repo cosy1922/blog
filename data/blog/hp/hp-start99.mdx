@@ -1,0 +1,64 @@
+---
+title: 개인 블로그 만들기 (1)
+date: '2024-01-05'
+tags: ['blog', 'window']
+draft: false
+summary: Nextjs로 개발된 template를 활용하여 블로그 만들기
+---
+
+## 소개
+
+Nextjs로 개발 된 개인 블로그 만들기
+
+## 1. 마음에 드는 Template 고르기
+
+    1.1 `https://vercel.com/templates` 링크 접속 하여 마음에 드는 template 선택 하기
+
+    1.2 고른 후 git 에서 코드 다운 받기
+        - `git clone https://github.com/timlrx/tailwind-nextjs-starter-blog.git`
+        ![Github Traffic](/blog/static/images/blogImg/hp1.png)
+
+    1.3 modules 설치(`yarn`) 후 `npm dev` 실행하여 프로젝트 돌리기
+        ![Github Traffic](/blog/static/images/blogImg/hp2.png)
+
+## 2. window 서버에 배포하기
+
+    글쓴이가 진행한 방법은 2가지가 있음.
+    - aws cloud server에 호스팅 하는 방법
+
+        - (1) 작업한 코드를 aws server에 똑같이 내려 받기.
+
+        - (2) 아래 스크립트를 window에 맞게 변경 후 build 실행 하기
+
+            ```json:package.json(변경전)
+                "scripts": {
+                    "build": "cross-env INIT_CWD=$PWD next build && cross-env NODE_OPTIONS='--experimental-json-modules' node ./scripts/postbuild.mjs"
+                }
+            ```
+
+            ```json:아래와　같이　변경　필요
+                    "cross-env INIT_CWD=$PWD next build" => "cross-env INIT_CWD=%cd% next build"
+            ```
+        - (3) build 성공 후 `yarn next start`
+
+    - git pages에 무료 호스팅 하는 방법
+        - pages 활성화 필요
+            ![Github Traffic](/blog/static/images/blogImg/hp3.png)
+            ![Github Traffic](/blog/static/images/blogImg/hp4.png)
+            <font color="darkviolet">위 와 같이 작업 후 git push 하면 자동 배포가 됩니다.</font>
+
+        - 수동 배포
+            - package.json에 script 추가하기
+                ```json:package.json
+                "scripts" : {
+                    "export": "next export",
+                    "deploy": "npm run build && npm run export && master -d out -b master -r https://github.com/cosy1922/testBlog.git"
+                }
+                ```
+
+            - `yarn add gh-pages`로 설치 후 위 `deploy` 진행 하면 `수동`으로 배포 가능
+
+
+    ## 3. 발생했던 이슈 (임시로 해결)
+        - `withContentlayer` window서버라 경로 이슈 문제로 일단 해당 부분 코드 제거
+                ![Github Traffic](/blog/static/images/blogImg/hp5.png)
