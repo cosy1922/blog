@@ -39,6 +39,7 @@ Nextjs로 개발 된 개인 블로그 만들기
             ```json:아래와　같이　변경　필요
                     "cross-env INIT_CWD=$PWD next build" => "cross-env INIT_CWD=%cd% next build"
             ```
+            => `yarn cross-env INIT_CWD=%cd% next build`
         - (3) build 성공 후 `yarn next start`
 
     - git pages에 무료 호스팅 하는 방법
@@ -60,5 +61,7 @@ Nextjs로 개발 된 개인 블로그 만들기
 
 
     ## 3. 발생했던 이슈 (임시로 해결)
+        ![Github Traffic](/blog/static/images/blogImg/hp4_2.png)
+
         - `withContentlayer` window서버라 경로 이슈 문제로 일단 해당 부분 코드 제거
-                ![Github Traffic](/blog/static/images/blogImg/hp5.png)
+        ![Github Traffic](/blog/static/images/blogImg/hp5.png)
