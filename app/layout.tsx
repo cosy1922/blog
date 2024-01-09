@@ -75,6 +75,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fff" />
       <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
       <meta name="google-site-verification" content="hyknr305FnCRIbIzAh27z_lEyQLPWPztDfumYKCBoJY" />
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
       <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
       <body className="bg-white text-black antialiased dark:bg-gray-950 dark:text-white">
         <ThemeProviders>
