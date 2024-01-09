@@ -1,0 +1,46 @@
+---
+title: Nextjs로 개발 된 화면 Google Adsense 적용시 발생 문제
+date: '2024-01-06'
+tags: ['blog', 'window', 'adsense']
+draft: false
+summary: Nextjs로 개발 된 Google Adsense 적용시 흰 화면 발생 문제
+---
+
+## 소개
+
+    [Nextjs에 Google Adsense 적용 시키기](http://localhost:3000/blog/blog/hp/hp-start98)
+
+    ### <font color="red">아래와 같은 문제 발생</font>
+
+    `'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7840980802013029' because it violates the following Content Security Policy directive: "script-src 'self' 'unsafe-eval' 'unsafe-inline' giscus.app analytics.umami.is". Note that 'script-src-elem' was not explicitly set, so 'script-src' is used as a fallback.`
+
+## 1. 원인
+
+    Content Security Policy (CSP)는 보안 정책으로
+
+    웹 페이지에서 허용되는 리소스의 출처 및 종류를 제어합니다.
+
+    에러 메시지를 통해 보면 `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js`
+
+    스크립트가 CSP 정책에 위배되고 있다는 것을 알 수 있습니다.
+
+## 2. 해결 방법
+
+    아래와 같이 CSP정책에 `script-src` 를 추가 하기.
+    `<meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-eval' 'unsafe-inline' giscus.app analytics.umami.is; script-src-elem 'self' 'unsafe-eval' 'unsafe-inline' giscus.app analytics.umami.is https://pagead2.googlesyndication.com;">`
+
+    글쓴이는 아래와 같이 적용 후 해결
+
+    ```javascript:next.config.js
+        const ContentSecurityPolicy = `
+            default-src 'self';
+            script-src 'self' 'unsafe-eval' 'unsafe-inline' giscus.app analytics.umami.is *.googletagmanager.com *.google-analytics.com;
+            script-src-elem 'self' 'unsafe-eval' 'unsafe-inline' giscus.app analytics.umami.is https://pagead2.googlesyndication.com https://tpc.googlesyndication.com/sodar/sodar2.js;
+            style-src 'self' 'unsafe-inline';
+            img-src * blob: data:;
+            media-src *.s3.amazonaws.com;
+            connect-src *;
+            font-src 'self';
+            frame-src giscus.app analytics.umami.is https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net/ https://www.google.com/ https://tpc.googlesyndication.com/;
+        `
+    ```
