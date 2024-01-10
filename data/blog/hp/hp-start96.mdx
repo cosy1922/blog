@@ -1,0 +1,67 @@
+---
+title: PM2를 활용하여 윈도우 서버에 Nextjs 프로젝트 배포
+date: '2024-01-07'
+tags: ['blog', 'window', 'nextjs', 'pm2']
+draft: false
+summary: 윈도우 서버에 pm2로 Nextjs 프로젝트 배포하는 방법
+---
+
+## 소개
+
+    PM2를 활용하여 윈도우 서버에 Nextjs 프로젝트 배포하는 방법
+
+## 1. PM2 배포 방법
+
+    ```json:package.json
+        "scripts": {
+            "start": "next dev",
+            "dev": "cross-env INIT_CWD=$PWD next dev",
+            "build": "cross-env INIT_CWD=$PWD next build && cross-env NODE_OPTIONS='--experimental-json-modules' node ./scripts/postbuild.mjs",
+            "windowbuild": "cross-env INIT_CWD=%cd% next build & cross-env NODE_OPTIONS='--experimental-json-modules' node ./scripts/postbuild.mjs",
+            "serve": "next start",
+            "analyze": "cross-env ANALYZE=true next build",
+            "lint": "next lint --fix --dir pages --dir app --dir components --dir lib --dir layouts --dir scripts",
+            "export": "next export",
+            "deploy": "npm run build && npm run export && master -d out -b master -r https://github.com/cosy1922/testBlog.git"
+        }
+    ```
+
+    - window에 pm2 설치하기
+        - `yarn add pm2`
+
+    - Next 프로젝트 빌드하기
+        - `yarn build`
+
+    - pm2로 실행하기
+        - 리눅스의 경우에는 바로 실행 가능함 (`pm2 start yarn --name "app2" -- run serve`)
+        - window의 경우에는 <font color="red">PM2 ERROR Script not found</font> 에러가 발생
+
+        - root 경로에 `startscript.js` 파일을 생성
+        ![Github Traffic](/blog/static/images/blogImg/hp7.png)
+        ```javascript:startscript.js
+            var cmd = require('node-cmd')
+            cmd.run('npm run serve')
+        ```
+
+        - `pm2 start startscript.js --name "blog"` 로 실행
+            - startscript.js 파일을 pm2 앱네임을 blog로 실행하겠다는 뜻
+
+        - `pm2 list` 로 정상 동작 확인
+        ![Github Traffic](/blog/static/images/blogImg/hp8.png)
+
+## 2. PM2 간단한 명령어
+
+    - 목록 보기
+        - `pm2 list`
+    - 시작 하기
+        - `pm2 start 앱이름`
+    - 종료하기
+        - `pm2 stop 앱이름`
+    - 재시작
+        - `pm2 restart 앱이름`
+    - 전체 업데이트
+        - `pm2 update`
+    - 변경 사항 저장하기
+        - `pm2 save`
+    - 로그 보기
+        - `pm2 logs`

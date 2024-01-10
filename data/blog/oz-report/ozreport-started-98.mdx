@@ -1,0 +1,107 @@
+---
+title: 오즈 서버 CORS 해결하기
+date: '2024-01-08'
+tags: ['oz report', 'javascript']
+draft: false
+summary: 'Eclipse로 실행중인 oz-report 서버 CORS 이슈 해결 방법'
+---
+
+## 소개
+
+외부에서 oz-report 오즈서버에 있는 파일등 접근할 경우 cors 이슈 해결하기
+
+## Web.xml에 코드 추가
+
+```xml:Web.xml(상단에 추가 코드1)
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+```
+
+```xml:Web.xml(추가 코드2)
+  <filter>
+    <filter-name>CORSFilter</filter-name>
+    <filter-class>oz80.CORSFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>CORSFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+```
+
+```xml:Web.xml(전체 코드)
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee https://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+  <servlet>
+    <servlet-name>httpserver</servlet-name>
+    <servlet-class>oz.server.OZServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>ozhello</servlet-name>
+    <servlet-class>HelloWorld</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>httpserver</servlet-name>
+    <url-pattern>/server</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>httpserver</servlet-name>
+    <url-pattern>/server/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>ozhello</servlet-name>
+    <url-pattern>/hello</url-pattern>
+  </servlet-mapping>
+
+  <!--  CORSFilter 설정 -->
+  <filter>
+    <filter-name>CORSFilter</filter-name>
+    <filter-class>oz80.CORSFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>CORSFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+</web-app>
+```
+
+## Resources폴더에 CORSFilter 파일 추가
+
+    ![Github Traffic](/blog/static/images/blogImg/oz8.png)
+
+    ```java:CORSFilter.java
+        package oz80;
+
+        import java.io.IOException;
+
+        import javax.servlet.Filter;
+        import javax.servlet.FilterChain;
+        import javax.servlet.FilterConfig;
+        import javax.servlet.ServletException;
+        import javax.servlet.ServletRequest;
+        import javax.servlet.ServletResponse;
+        import javax.servlet.http.HttpServletResponse;
+
+        public class CORSFilter implements Filter {
+                public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+                        HttpServletResponse response = (HttpServletResponse) res;
+                        response.setHeader("Access-Control-Allow-Origin", "*");
+                        response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT");
+                        response.setHeader("Access-Control-Max-Age", "3600");
+                        response.setHeader("Access-Control-Allow-Headers", "x-requested-with, origin, content-type, cache-control, accept");
+                        chain.doFilter(req, res);
+                        }
+                public void init(FilterConfig filterConfig) {}
+                public void destroy() {}
+        }
+    ```

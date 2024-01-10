@@ -7,13 +7,13 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 const ContentSecurityPolicy = `
   default-src 'self';
   script-src 'self' 'unsafe-eval' 'unsafe-inline' giscus.app analytics.umami.is *.googletagmanager.com *.google-analytics.com;
-  script-src-elem 'self' 'unsafe-eval' 'unsafe-inline' giscus.app analytics.umami.is https://pagead2.googlesyndication.com https://tpc.googlesyndication.com/sodar/sodar2.js;
+  script-src-elem 'self' 'unsafe-eval' 'unsafe-inline' giscus.app analytics.umami.is https://pagead2.googlesyndication.com https://tpc.googlesyndication.com/sodar/sodar2.js https://fundingchoicesmessages.google.com/;
   style-src 'self' 'unsafe-inline';
   img-src * blob: data:;
   media-src *.s3.amazonaws.com;
   connect-src *;
   font-src 'self';
-  frame-src giscus.app analytics.umami.is https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net/ https://www.google.com/ https://tpc.googlesyndication.com/;
+  frame-src giscus.app analytics.umami.is https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net/ https://www.google.com/ https://tpc.googlesyndication.com/ https://fundingchoicesmessages.google.com/;
 `
 
 const securityHeaders = [
