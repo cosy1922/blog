@@ -1,0 +1,106 @@
+---
+title: 오즈 oz e-form 문서 만든 후 JSON값 가져오기 및 JSON값 넣기
+date: '2024-01-09'
+tags: ['oz report', 'javascript']
+draft: false
+summary: oz-report / oz e-form JSON값 추출 및 JSON INPUT 넣는 방법
+---
+
+## 소개
+
+OZ e-Form 에서 입력 필드 값 JSON 추출 하는 방법 알아가기
+
+OZ e-Form 에서 ozr파일로 JSON값 보내기
+
+## e-Form Designer 툴을 이용하여 문서 먼저 생성
+
+- e-form 툴 실행
+  ![Github Traffic](/blog/static/images/blogImg/oz9.png)
+
+- 더미 밴드 생성
+  ![Github Traffic](/blog/static/images/blogImg/oz10.png)
+
+- 테스트를 위해 FormID 세팅하는 방법과 이름값만 변경하기
+
+  - (이름 변경) `get_label_name1` / (FormID 만 변경) `get_label_form1`
+  - (이름 변경) `set_label_name1` / (FormID 만 변경) `set_label_form1`
+
+  ![Github Traffic](/blog/static/images/blogImg/oz11.png)
+
+## 생성한 ozr 파일 호출하기
+
+    ```jsp:oz.jsp
+        <%@ page language="java" contentType="text/html; charset=UTF-8"
+        pageEncoding="UTF-8"%>
+
+        <!DOCTYPE html>
+
+        <html style='height:100%;'>
+          <head>
+              <meta http-equiv='X-UA-Compatible' content='IE=edge'/>
+              <meta charset='utf-8'>
+              <script type='text/javascript' src='http://code.jquery.com/jquery-2.0.3.min.js'></script>
+              <link rel='stylesheet' href='http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css' type='text/css'/>
+              <script type='text/javascript' src='http://code.jquery.com/ui/1.12.1/jquery-ui.min.js'></script>
+              <link rel='stylesheet' href='/oz80/ozhviewer/ui.dynatree.css' type='text/css'/>
+              <script crossorigin='anonymous' type='text/javascript' src='/oz80/ozhviewer/jquery.dynatree.js' charset='utf-8'></script>
+              <script crossorigin='anonymous' type='text/javascript' src='/oz80/ozhviewer/OZJSViewer.js' charset='utf-8'></script>
+              <script type='text/javascript' src='/oz80/ozhviewer/pdf_js/web/compatibility.js' charset='utf-8'></script>
+              <script type='text/javascript' src='/oz80/ozhviewer/pdf_js/build/pdf.js' charset='utf-8'></script>
+          </head>
+          <body style='width:98%;height:98%'>
+            <input type='button' id='save' name='ipnm1' class='btnClass' value='저장' onclick="getjsondata()"/>
+
+            <div id='OZViewer' style ='width:98%;height:95%' ></div>
+            <script type='text/javascript'>
+
+              function getjsondata() {
+                inputData = OZViewer.GetInformation('INPUT_JSON_ALL_GROUP_BY_REPORT');
+                console.log(inputData)
+              }
+
+              function SetOZParamters_OZViewer() {
+                  var oz;
+                  var params = {
+                      'set_label_name1': 'set_label_name1',
+                      'set_label_form1': 'set_label_form1'
+                  }
+
+                  oz = document.getElementById('OZViewer');
+                  oz.sendToActionScript('Access-Control-Allow-Origin','*');
+                  oz.sendToActionScript('connection.servlet','/oz80/server');
+                  oz.sendToActionScript('connection.reportname','bl_test.ozr');
+                  oz.sendToActionScript('connection.pcount','1');
+                  oz.sendToActionScript('connection.inputjson',JSON.stringify(params));
+                  oz.sendToActionScript('connection.args1','jsondata=' + JSON.stringify(params));
+                  return true;
+              }
+
+              start_ozjs('OZViewer','/oz80/ozhviewer/');
+
+            </script>
+          </body>
+        </html>
+    ```
+
+## 결과값
+
+- 세팅한 파라미터값 default 값으로 들어가있음
+
+  ```
+  var params = {
+                'set_label_name1': 'set_label_name1',
+                'set_label_form1': 'set_label_form1'
+            }
+  ```
+
+- console에 보면 현재 화면에 보여지는 JSON값 추출이 됨
+
+  ```
+  function getjsondata() {
+    inputData = OZViewer.GetInformation('INPUT_JSON_ALL_GROUP_BY_REPORT');
+    console.log(inputData)
+  }
+  ```
+
+  ![Github Traffic](/blog/static/images/blogImg/oz12.png)

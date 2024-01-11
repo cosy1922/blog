@@ -1,0 +1,105 @@
+---
+title: 오즈 oz report 각 기능 확인
+date: '2024-01-09'
+tags: ['oz report', 'javascript']
+draft: false
+summary: oz report toolbar, scroll 등 각 기능에 대한 설명 및 찾기
+---
+
+## 소개
+
+- 툴바 제거하는 방법
+- scroll로 PDF 다음페이지 넘기는 방법
+- oz e-form 도움말 확인하기
+
+## 툴바 제거하는 방법
+
+- 메모 추가 / 데이터 저장 버튼을 제거하는 방법
+  ![Github Traffic](/blog/static/images/blogImg/oz14.png)
+  ```
+   oz.sendToActionScript('toolbar.addmemo','false'); // 툴바 메모 추가 아이콘 제거
+   oz.sendToActionScript('toolbar.savedm','false'); //  툴바 데이터 저장 버튼 제거
+  ```
+
+## Scroll로 다음 페이지 넘어가는 방법
+
+- 버튼 클릭해서 넘어가기 불편함 해소
+  ![Github Traffic](/blog/static/images/blogImg/oz15.png)
+  ```
+    oz.sendToActionScript('viewer.pagenavigate_by_scroll','true'); // 스크롤로 페이지 이동 가능하도록 기능 추가
+  ```
+
+## oz.jsp 전체 코드
+
+```jsp:oz.jsp
+    <%@ page language="java" contentType="text/html; charset=UTF-8"
+        pageEncoding="UTF-8"%>
+    <!DOCTYPE html>
+    <html style='height:100%;'>
+      <head>
+          <meta http-equiv='X-UA-Compatible' content='IE=edge'/>
+          <meta charset='utf-8'>
+          <script type='text/javascript' src='http://code.jquery.com/jquery-2.0.3.min.js'></script>
+          <link rel='stylesheet' href='http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css' type='text/css'/>
+          <script type='text/javascript' src='http://code.jquery.com/ui/1.12.1/jquery-ui.min.js'></script>
+          <link rel='stylesheet' href='/oz80/ozhviewer/ui.dynatree.css' type='text/css'/>
+          <script crossorigin='anonymous' type='text/javascript' src='/oz80/ozhviewer/jquery.dynatree.js' charset='utf-8'></script>
+          <script crossorigin='anonymous' type='text/javascript' src='/oz80/ozhviewer/OZJSViewer.js' charset='utf-8'></script>
+          <script type='text/javascript' src='/oz80/ozhviewer/pdf_js/web/compatibility.js' charset='utf-8'></script>
+          <script type='text/javascript' src='/oz80/ozhviewer/pdf_js/build/pdf.js' charset='utf-8'></script>
+      </head>
+      <body style='width:98%;height:98%'>
+        <input type='button' id='save' name='ipnm1' class='btnClass' value='저장' onclick="getjsondata()"/>
+
+        <div id='OZViewer' style ='width:98%;height:95%' ></div>
+        <script type='text/javascript'>
+
+          function getjsondata() {
+            inputData = OZViewer.GetInformation('INPUT_JSON_ALL_GROUP_BY_REPORT');
+            console.log(inputData)
+          }
+
+          function SetOZParamters_OZViewer() {
+              var oz;
+              var params = {
+                  'set_label_name1': 'set_label_name1',
+                  'set_label_form1': 'set_label_form1'
+              }
+
+              oz = document.getElementById('OZViewer');
+              oz.sendToActionScript('Access-Control-Allow-Origin','*');
+              oz.sendToActionScript('connection.servlet','/oz80/server');
+
+              oz.sendToActionScript('viewer.childcount',1); // 멀티보고서의 child 개수 (전체개수-1)
+              oz.sendToActionScript('viewer.focus_doc_index','0'); // 처음 보여지는 보고서 번호(0부터 시작)
+              oz.sendToActionScript('print.alldocument','true'); // 멀티 보고서 한번에 인쇄
+              oz.sendToActionScript('global.concatpage','true'); // 멀티 보고서를 하나의 보고서처럼 보여줌. 페이지 이어짐
+              oz.sendToActionScript('global.inheritparameter','true'); // 첫번째 보고서의 파라미터 값을 상속 받음
+
+              oz.sendToActionScript('toolbar.addmemo','false'); // 툴바 메모 추가 아이콘 제거
+              oz.sendToActionScript('toolbar.savedm','false'); //  툴바 데이터 저장 버튼 제거
+              oz.sendToActionScript('viewer.pagenavigate_by_scroll','true'); // 스크롤로 페이지 이동 가능하도록 기능 추가
+
+              oz.sendToActionScript('connection.reportname','bl_test.ozr');
+              oz.sendToActionScript('connection.pcount','1');
+              oz.sendToActionScript('connection.inputjson',JSON.stringify(params));
+
+              oz.sendToActionScript('child1.connection.reportname','bl_test222.ozr');
+              oz.sendToActionScript('child1.connection.pcount','1');
+              oz.sendToActionScript('child1.connection.inputjson',JSON.stringify(params));
+
+              return true;
+          }
+
+          start_ozjs('OZViewer','/oz80/ozhviewer/');
+
+        </script>
+      </body>
+    </html>
+```
+
+## 도움말 보기
+
+- oz e-form 디자이너 툴을 보면 도움말이 있습니다.
+- 추가적으로 필요한 기능 검색 및 `색인`,`검색` 탭을 활용하여 search도 할 수 있습니다.
+  ![Github Traffic](/blog/static/images/blogImg/oz16.png)
