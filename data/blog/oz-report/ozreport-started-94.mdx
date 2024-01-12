@@ -1,0 +1,68 @@
+---
+title: 오즈 oz report 필수 값 체크
+date: '2024-01-10'
+tags: ['oz report', 'javascript']
+draft: false
+summary: oz e-form input text 빈값 경고창 띄우기
+---
+
+## 소개
+
+- oz e-form에서 빈값 체크 하는 기능 구현하기
+- 보고서 오픈 후 저장 또는 다음 페이지 넘어갈때 안되도록 응용 가능한 기능
+
+## OZ e-form Designer 필요 입력 컴포넌트 및 버튼 추가
+
+- TextBox1,2,3(FormID 일치) 추가 및 버튼 추가  
+  ![Github Traffic](/blog/static/images/blogImg/oz17.png)
+
+## 빈값 체크하는 함수 구현
+
+- 왼쪽 `파일명.ozr` 클릭 후 `ReportTemplate` 안의 `Functions` 이벤트 안에 함수 작성
+  ![Github Traffic](/blog/static/images/blogImg/oz18.png)
+
+  ```
+    /* 함수 설명 : 입력된 값 존재 여부 리턴
+   사용 예 :
+      if( checkValue(This, "TextBox1", "텍스트박스")	) return true;
+      else return false;
+    */
+    var checkValue = function(btn, checkFormID, msgName) {
+        var obj = btn.GetInputComponent(checkFormID);
+        if(obj != null && obj.GetValue() == "") {
+            var msg = "값을 입력해 주세요.";
+            if(msgName != null && msgName.length != 0) msg = msgName + " 값을 입력해 주세요.";
+
+            _MessageBox(msg, "알림", function() {
+                obj.EnsureVisible();
+                obj.SetFocus();
+            });
+            return false;
+        } else {
+            return true;
+        }
+    }
+  ```
+
+## 버튼에서 빈값 체크하는 함수 호출
+
+- 버튼 클릭 후 `OnCheckValidity` 이벤트 안에서 함수 호출
+  ![Github Traffic](/blog/static/images/blogImg/oz19.png)
+
+```
+    if(
+        checkValue(This, "TextBox1", "텍스트박스(TextBox1)")
+        && checkValue(This, "TextBox2", "텍스트박스(TextBox2)")
+        && checkValue(This, "TextBox3", "텍스트박스(TextBox3)")
+    ) {
+
+        return true;
+    } else {
+        return false;
+    }
+```
+
+## 실행후 결과 보기
+
+- 아래와 같이 경고창이 생성 되는걸 볼 수 있습니다.
+  ![Github Traffic](/blog/static/images/blogImg/oz20.png)

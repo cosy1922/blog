@@ -9,7 +9,12 @@ export function Adsense() {
       if (adsbygoogle && !adsbygoogle.loaded) {
         // @ts-ignore
         ;(window.adsbygoogle = window.adsbygoogle || []).push({})
+        console.log('ad suc')
+      } else {
+        console.log('ad fail')
       }
+      // @ts-ignore
+      console.log(adsbygoogle)
     } catch (err) {
       //
     }
