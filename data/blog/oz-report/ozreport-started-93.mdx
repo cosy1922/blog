@@ -1,0 +1,57 @@
+---
+title: 오즈 oz report 외부 스크립트 및 컴포넌트에 값 넣기
+date: '2024-01-11'
+tags: ['oz report', 'javascript']
+draft: false
+summary: oz e-form 외부 js 참조하기 및 onFocus() 함수 & SetText() 매소드를 활용하여 컴포넌트에 값 넣기
+---
+
+## 소개
+
+- oz e-form에서 javascript 외부 참조 하는 방법
+- onFocus() 이벤트를 활용하여 원하는 컴포넌트에 SetText() 매소드를 활용해 값 넣기
+
+## oz e-form에서 javascript 외부 참조 하는 방법
+
+    - OZ e-Form Designer 8.0 에서 적용 방법.
+        ![Github Traffic](/blog/static/images/blogImg/oz21.png)
+        - 미리보기 옵션에 `viewer.external_functions_path=ozp://common.js` 추가
+        - 기존에 사용하고 있는 문법이 있으면 뒤에 붙이면 됨
+        ```txt:example
+        connection.inputjson={"TextBox1":"AAA","DateTimePicker1":"2023-10-30","DateTimePicker2":"2024년01월11일","DateTimePicker3":"","CheckBox1_Y_N":"Y"}
+        viewer.external_functions_path=ozp://common.js
+        ```
+    - Html JSP 파일에서 호출 하는 방법.
+        - `sendToActionScript` 에 아래 코드 추가
+        `oz.sendToActionScript('viewer.external_functions_path','ozp://common.js'); //이파일이 없을경우 보고서 오픈시 에러발생합니다.`
+
+## onFocus() 이벤트를 활용하여 원하는 컴포넌트에 SetText() 매소드를 활용해 값 넣기
+
+- `common.js` 파일에 아래 코드 넣기
+
+```javascript:common.js
+    var globalFocusName = "";
+
+    var testOnFocus = function(Obj){
+        globalFocusName = Obj.GetFormID();
+    }
+```
+
+- 필요한 TextBox 컴포넌트 생성 후 onFocus 이벤트에 testOnFocus() 함수 등록 <font color="red">(FormID 지정 필요)</font>
+
+![Github Traffic](/blog/static/images/blogImg/oz22.png)
+
+`testOnFocus(This);`
+
+- 버튼에 onClick 이벤트에 SetText 매소드 삽입
+  ![Github Traffic](/blog/static/images/blogImg/oz23.png)
+  ```javascript:OnClick
+    var objComp = GetInputComponent(globalFocusName);
+    objComp.EnsureVisible();
+    objComp.SetText("안녕!!");
+  ```
+
+## 실행후 결과 보기
+
+- 컴포넌트 선택 후 버튼 클릭하면 값 삽입이 됨.
+  ![Github Traffic](/blog/static/images/blogImg/oz24.png)
